@@ -131,8 +131,8 @@ window.addEventListener('DOMContentLoaded', () => {
     drawHZ(y, pxMin, pxMax); 
     drawHalfArc(y, pxMin, '#fff'); 
     drawHalfArc(y, pxMax, '#fff');
-    drawMarkerWithLabel(y, pxMin, '#006400', '100°', rawInnerAU); 
-    drawMarkerWithLabel(y, pxMax, '#228B22', '0°', rawOuterAU);
+    drawMarkerWithLabel(y, pxMin, '#d9d9d9', '100°', rawInnerAU); 
+    drawMarkerWithLabel(y, pxMax, '#d9d9d9', '0°', rawOuterAU);
     // update details panel
     const unit = unitSelect.value;
     const dMin = unit === 'm' ? rawInnerAU * AU_TO_M : rawInnerAU;

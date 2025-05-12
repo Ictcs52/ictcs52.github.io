@@ -164,6 +164,13 @@ loDetails.innerHTML = `
     const { inner, outer } = computeHZ(avg);
     rawInnerAU = inner; rawOuterAU = outer;
     updateInputs();
+
+    typeResult.innerHTML = `
+  <div><strong>L★/L⊙ Avg:</strong> ${avg.toFixed(2)}</div>
+  <div><strong>rₘᵢₙ (100 °C):</strong> ${inner.toFixed(2)} AU</div>
+  <div><strong>rₒᵤₜ (0 °C):</strong> ${outer.toFixed(2)} AU</div>
+`;
+
   });
   btnShowMin.addEventListener('click', showInner);
   btnShowMax.addEventListener('click', showOuter);

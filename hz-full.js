@@ -16,9 +16,6 @@ const avgLumData = {
   "M5": 0.03,      "M6": 0.02,      "M7": 0.01,      "M8": 0.01,      "Mave": 0.01
 };
 
-
-
-
 // DOM refs
 const spectralType = document.getElementById('spectralType');
 const subType      = document.getElementById('subType');
@@ -96,29 +93,31 @@ function drawHalfArc(y, px, color) {
   ctx.lineWidth   = 2;
   ctx.stroke();
 }
+
+// 6) Draw marker with label
 function drawMarkerWithLabel(y, px, color, degLabel, dist) {
   const r  = 8;
   const cx = MARGIN_LEFT + px;
 
   // curved tick
   ctx.beginPath();
-  ctx.arc(cx, y, r, Math.PI*1.25, Math.PI*1.75, false);
+  ctx.arc(cx, y, r, Math.PI * 1.25, Math.PI * 1.75, false);
   ctx.strokeStyle = color;
   ctx.lineWidth   = 2;
   ctx.stroke();
 
-  // degree label ABOVE tick, shifted right 20px
+  // degree label above, shifted right 20px
   ctx.fillStyle = '#007bff';
   ctx.font      = '14px Arial';
-  let tw = ctx.measureText(degLabel).width;
-  let dxDeg = cx - tw/2 - 20;            // shift 20px right
+  let tw        = ctx.measureText(degLabel).width;
+  let dxDeg     = cx - tw / 2 + 20;
   ctx.fillText(degLabel, dxDeg, y - r - 16);
 
-  // distance label BELOW tick
-  const unit     = unitSelect.value.toUpperCase();
+  // distance label below, shifted left 40px
+  const unit     = unitSelect.value;
   const distText = `${dist.toFixed(2)} ${unit}`;
   tw = ctx.measureText(distText).width;
-  let dx = cx - tw/2 - 40;               // shift left 20px
+  let dx = cx - tw / 2 - 40;
   if (dx < MARGIN_LEFT) dx = MARGIN_LEFT;
   if (dx + tw > canvas.width - MARGIN_RIGHT) {
     dx = canvas.width - MARGIN_RIGHT - tw;
@@ -126,7 +125,6 @@ function drawMarkerWithLabel(y, px, color, degLabel, dist) {
   const dy = y + r + 40;
   ctx.fillText(distText, dx, dy);
 }
-
 
 // 7) Render functions
 function showInner(rMin, rMax) {

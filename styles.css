@@ -87,7 +87,6 @@ body {
 /* ===== พื้นที่ Canvas ===== */
 #hzCanvas {
   width: 100%;
-  height: 250px;
   border: 2px solid #415a77;
   border-radius: 0.5rem;
   background: #0d1b2a;

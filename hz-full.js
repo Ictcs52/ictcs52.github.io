@@ -1,5 +1,6 @@
 // js/hz-full.js
 
+// Ensure DOM is loaded before querying elements
 window.addEventListener('DOMContentLoaded', () => {
   // Lookup table: L★/L⊙ Avg (ค่าจาก Excel)
   const avgLumData = {
@@ -28,11 +29,14 @@ window.addEventListener('DOMContentLoaded', () => {
   const typeResult   = document.getElementById('typeResult');
   const minR         = document.getElementById('minR');
   const maxR         = document.getElementById('maxR');
-  const unitSelect   = document.getElementById('unitSelect');
+  const btnShowMin   = document.getElementById('btnShowMin');
+  const btnShowMax   = document.getElementById('btnShowMax');
   const btnShowAll   = document.getElementById('btnShowAll');
+  const unitSelect   = document.getElementById('unitSelect');
   const btnUpdate    = document.getElementById('btnUpdate');
   const loDetails    = document.getElementById('loDetails');
 
+  // Canvas setup
   const canvas = document.getElementById('hzCanvas');
   const ctx    = canvas.getContext('2d');
   canvas.width  = canvas.parentElement.clientWidth;
@@ -43,28 +47,27 @@ window.addEventListener('DOMContentLoaded', () => {
   const MARGIN_LEFT  = STAR_RADIUS + 20;
   const MARGIN_RIGHT = 20;
 
-  // 1) Compute HZ radii (inner & outer in AU)
+  // Compute HZ radii
   function computeHZ(L) {
     const s = Math.sqrt(L);
     return { inner: 0.75 * s, outer: 1.77 * s };
   }
 
-  // 2) Clear canvas
+  // Clear canvas
   function clearCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  // 3) Draw baseline & star
+  // Draw baseline & star
   function drawBase() {
     const y = canvas.height / 2;
-    // baseline
     ctx.beginPath();
     ctx.moveTo(MARGIN_LEFT, y);
     ctx.lineTo(canvas.width - MARGIN_RIGHT, y);
     ctx.strokeStyle = '#333';
     ctx.lineWidth   = 2;
     ctx.stroke();
-    // star
+
     ctx.beginPath();
     ctx.arc(MARGIN_LEFT, y, STAR_RADIUS, 0, 2 * Math.PI);
     ctx.fillStyle   = '#FFD700';
@@ -75,7 +78,7 @@ window.addEventListener('DOMContentLoaded', () => {
     return y;
   }
 
-  // 4) Draw shading between inner & outer
+  // Draw shading half-ring
   function drawHZ(y, pxMin, pxMax) {
     ctx.beginPath();
     ctx.moveTo(MARGIN_LEFT + pxMin, y);
@@ -87,107 +90,87 @@ window.addEventListener('DOMContentLoaded', () => {
     ctx.fill();
   }
 
-  // 5) Draw a half‑arc boundary
+  // Draw boundary arc
   function drawHalfArc(y, px, color) {
     ctx.beginPath();
-    ctx.arc(MARGIN_LEFT, y, px, Math.PI / 2, -Math.PI / 2, true);
+    ctx.arc(MARGIN_LEFT, y, px, Math.PI/2, -Math.PI/2, true);
     ctx.strokeStyle = color;
     ctx.lineWidth   = 2;
     ctx.stroke();
   }
 
-  // 6) Draw marker with label
+  // Draw marker + labels
   function drawMarkerWithLabel(y, px, color, degLabel, dist) {
     const r  = 8;
     const cx = MARGIN_LEFT + px;
 
-    // curved tick
     ctx.beginPath();
-    ctx.arc(cx, y, r, Math.PI * 1.25, Math.PI * 1.75, false);
+    ctx.arc(cx, y, r, Math.PI*1.25, Math.PI*1.75, false);
     ctx.strokeStyle = color;
     ctx.lineWidth   = 2;
     ctx.stroke();
 
-    // degree label above, shifted right 20px
     ctx.fillStyle = '#007bff';
     ctx.font      = '14px Arial';
-    let tw        = ctx.measureText(degLabel).width;
-    let dxDeg     = cx - tw / 2 + 20;
-    ctx.fillText(degLabel, dxDeg, y - r - 16);
+    let tw = ctx.measureText(degLabel).width;
+    ctx.fillText(degLabel, cx - tw/2 + 20, y - r - 16);
 
-    // distance label below, shifted left 40px
     const unit     = unitSelect.value;
     const distText = `${dist.toFixed(2)} ${unit}`;
     tw = ctx.measureText(distText).width;
-    let dx = cx - tw / 2 - 40;
+    let dx = cx - tw/2 - 40;
     if (dx < MARGIN_LEFT) dx = MARGIN_LEFT;
-    if (dx + tw > canvas.width - MARGIN_RIGHT) {
-      dx = canvas.width - MARGIN_RIGHT - tw;
-    }
-    const dy = y + r + 40;
-    ctx.fillText(distText, dx, dy);
+    if (dx + tw > canvas.width - MARGIN_RIGHT) dx = canvas.width - MARGIN_RIGHT - tw;
+    ctx.fillText(distText, dx, y + r + 40);
   }
 
-  // 7) Render functions
+  // Show functions
   function showInner(rMin, rMax) {
     clearCanvas();
     const y     = drawBase();
     const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rMax;
-    const pxMin = rMin * scale;
-    drawHalfArc(y, pxMin, '#006400');
-    drawMarkerWithLabel(y, pxMin, '#006400', '100°', rMin);
+    drawHalfArc(y, rMin*scale, '#006400');
+    drawMarkerWithLabel(y, rMin*scale, '#006400', '100°', rMin);
   }
 
   function showOuter(rMin, rMax) {
     clearCanvas();
     const y     = drawBase();
     const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rMax;
-    const pxMax = rMax * scale;
-    drawHalfArc(y, pxMax, '#228B22');
-    drawMarkerWithLabel(y, pxMax, '#228B22', '0°', rMax);
+    drawHalfArc(y, rMax*scale, '#228B22');
+    drawMarkerWithLabel(y, rMax*scale, '#228B22', '0°', rMax);
   }
 
   function showAll(rMin, rMax) {
     clearCanvas();
     const y     = drawBase();
     const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rMax;
-    const pxMin = rMin * scale;
-    const pxMax = rMax * scale;
-    drawHZ(y, pxMin, pxMax);
-    drawHalfArc(y, pxMin, '#006400');
-    drawHalfArc(y, pxMax, '#228B22');
-    drawMarkerWithLabel(y, pxMin, '#006400', '100°', rMin);
-    drawMarkerWithLabel(y, pxMax, '#228B22', '0°', rMax);
+    drawHZ(y, rMin*scale, rMax*scale);
+    drawHalfArc(y, rMin*scale, '#006400');
+    drawHalfArc(y, rMax*scale, '#228B22');
+    drawMarkerWithLabel(y, rMin*scale, '#006400', '100°', rMin);
+    drawMarkerWithLabel(y, rMax*scale, '#228B22', '0°', rMax);
   }
 
-  // 8) Update on "Show"
+  // Event handlers
   btnTypeShow.addEventListener('click', () => {
     const key = spectralType.value + subType.value;
     const avg = avgLumData[key] || 0;
     lumAvg.value = avg ? avg.toFixed(2) : '–';
-    const { inner, outer } = computeHZ(avg);
+    const {inner, outer} = computeHZ(avg);
     minR.value = inner.toFixed(2);
     maxR.value = outer.toFixed(2);
-    typeResult.innerHTML = `
-      <div><strong>rₘᵢₙ:</strong> ${inner.toFixed(2)} AU</div>
-      <div><strong>rₒᵤₜ:</strong> ${outer.toFixed(2)} AU</div>
-    `;
+    typeResult.innerHTML = `<div><strong>rₘᵢₙ:</strong> ${inner.toFixed(2)} AU</div><div><strong>rₒᵤₜ:</strong> ${outer.toFixed(2)} AU</div>`;
   });
 
-  // 9) Button handlers
-  btnShowAll.addEventListener('click', () =>
-    showAll(parseFloat(minR.value), parseFloat(maxR.value))
-  );
-  btnUpdate.addEventListener('click', () =>
-    showAll(parseFloat(minR.value), parseFloat(maxR.value))
-  );
+  btnShowAll.addEventListener('click', () => showAll(parseFloat(minR.value), parseFloat(maxR.value)));
+  btnUpdate.addEventListener('click', () => showAll(parseFloat(minR.value), parseFloat(maxR.value)));
 
-  // 10) Reset on change
   [spectralType, subType, unitSelect].forEach(el =>
     el.addEventListener('change', () => {
-      lumAvg.value        = '–';
-      minR.value          = '';
-      maxR.value          = '';
+      lumAvg.value = '–';
+      minR.value   = '';
+      maxR.value   = '';
       typeResult.innerHTML = '';
       loDetails.innerHTML  = '';
       clearCanvas();

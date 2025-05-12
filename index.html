@@ -1,24 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Habitable Zone Explorer 1</title>
+  <title>Habitable Zone Explorer</title>
   <!-- Bootstrap 5 -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
     rel="stylesheet"/>
   <link href="styles.css" rel="stylesheet"/>
-    <script src="hz-full.js"></script>
-    <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
-  </script>
 </head>
 <body>
   <nav class="navbar navbar-light bg-light mb-4">
     <div class="container">
-      <span class="navbar-brand h4">Habitable Zone Explorer</span>
+      <span class="navbar-brand h3">Habitable Zone Explorer</span>
     </div>
+<h5>Habitatable zone หรือเขตเอื้อชีวิต คือระยะห่างระหว่างดาวฤกษ์และดาวเคราะห์
+    ที่ทำให้อุณหภูมิของดาวเคราะห์อยู่ระหว่าง 0-100 องศาเซลเซียส ทำให้น้ำมีสถานะเป็นของเหลว
+    ซึ่งน้ำในสถานะของเหลวเป็นปัจจัยสำคัญต่อสิ่งมีชีวิต เขตเอื้อชีวิตจึงเป็นเขตที่เหมาะกับการกำเนิดสิ่งมีชีวิต
+    โดยระยะทางของขอบเขตเอื้อชีวิต จะแปรผันตรงกับกำลังส่องสว่างดาวฤกษ์ (L★/L⊙) ทั้งนี้ขึ้นอยู่กับปัจจัยอื่นๆ ด้วย
+    เช่น การมีชั้นบรรยากาศ ค่าสัมประสิทธิ์การสะท้อนแสงของดาว ฯลฯ</h5>
   </nav>
 
   <!-- 1. หน้าแรก: Filter by Spectral Type -->
@@ -28,6 +30,7 @@
       <form id="typeForm" class="row g-3 align-items-end">
         <div class="col-md-2">
           <label for="spectralType" class="form-label">Type</label>
+          <h6>ชนิดดาวฤกษ์</h6>
           <select id="spectralType" class="form-select">
             <option>O</option><option>B</option><option>A</option>
             <option>F</option><option>G</option><option>K</option><option>M</option>
@@ -35,6 +38,7 @@
         </div>
         <div class="col-md-2">
           <label for="subType" class="form-label">Subtype</label>
+           <h6>ชนิดดาาวฤกษ์ย่อย</h6>
           <select id="subType" class="form-select">
             <option>0</option><option>1</option><option>2</option>
             <option>3</option><option>4</option><option>5</option>
@@ -43,6 +47,8 @@
         </div>
         <div class="col-md-3">
           <label for="lumAvg" class="form-label">L★/L⊙ Avg</label>
+          <h6>ค่าเฉลี่ยกำลังส่องสว่างดาวฤกษ์ในจำนวนเท่าของดวงอาทิตย์</h6>
+          
           <input type="text"
                  id="lumAvg"
                  class="form-control"
@@ -64,8 +70,9 @@
   <!-- 2. Habitable Zone by L★/L⊙ -->
   <section class="container mb-5">
     <div class="card p-4">
-      <h5 class="card-title">2. Habitable Zone by L★/L⊙</h5>
-
+      <h5 class="card-title">2. Habitable Zone by L★/L⊙</h>
+      <h6>แบบจำลองแสดงขอบเขตเอื้อชีวิตตามกำลังส่องสว่าง</h6>
+      
       <!-- Canvas แสดงผลแบบ linear -->
       <div class="mb-4 text-center">
         <canvas id="hzCanvas" width="800" height="200"></canvas>
@@ -74,7 +81,8 @@
       <!-- Controls: แสดงระยะ rᵢₙ, rₒᵤₜ -->
       <form id="loForm" class="row g-3 align-items-end">
         <div class="col-md-2">
-          <label for="minR" class="form-label">rₘᵢₙ (AU) at 100 °C</label>
+          <label for="minR" class="form-label">Minimum radius at 100 °C</label>
+          <h6>ระยะทางจากดวงอาทิตย์ที่ใกล้ที่สุด ที่อุณหภูมิเฉลี่ย 100 องศาเซลเซียส</h6>
           <input type="number" step="0.01"
                  id="minR"
                  class="form-control"
@@ -88,7 +96,8 @@
           </button>
         </div>
         <div class="col-md-2">
-          <label for="maxR" class="form-label">rₒᵤₜ (AU) at 0 °C</label>
+          <label for="maxR" class="form-label">Maximum radius at 0 °C</label>
+          <h6>ระยะทางจากดวงอาทิตย์ที่ไกลที่สุด ที่อุณหภูมิเฉลี่ย 0 องศาเซลเซียส</h6>
           <input type="number" step="0.01"
                  id="maxR"
                  class="form-control"
@@ -128,7 +137,9 @@
     </div>
   </section>
 
-
-
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <script src="hz-full.js"></script>
 </body>
 </html>

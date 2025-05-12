@@ -5,3 +5,90 @@ body {
   border: 1px solid #ccc;
   background: #fff;
 }
+
+/* styles.css */
+
+/* ใช้ฟอนต์ Google Font “Space Mono” สำหรับความรู้สึกอวกาศ */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+body {
+  background: radial-gradient(circle at center, #0d1b2a 0%, #000814 100%);
+  color: #e0e1dd;
+  font-family: 'Space Mono', monospace;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background: rgba(13, 27, 42, 0.8) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.navbar-brand {
+  color: #e0e1dd !important;
+}
+
+.card {
+  background: rgba(13, 27, 42, 0.9);
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+
+.card-title, h5, h6 {
+  color: #caf0f8;
+}
+
+.form-label {
+  color: #a8dadc;
+}
+
+.form-select, .form-control {
+  background: #1b263b;
+  color: #e0e1dd;
+  border: 1px solid #415a77;
+}
+
+.form-select:focus, .form-control:focus {
+  border-color: #e63946;
+  box-shadow: 0 0 0 0.2rem rgba(230,57,70,0.25);
+}
+
+.btn-primary {
+  background: #e63946;
+  border: none;
+}
+.btn-primary:hover {
+  background: #d62839;
+}
+
+.btn-success {
+  background: #2a9d8f;
+  border: none;
+}
+.btn-success:hover {
+  background: #21867a;
+}
+
+.btn-secondary {
+  background: #457b9d;
+  border: none;
+}
+.btn-secondary:hover {
+  background: #3a6f8f;
+}
+
+#hzCanvas {
+  width: 100%;
+  height: 250px;
+  border: 2px solid #415a77;
+  border-radius: 0.5rem;
+  background: #0d1b2a;
+}
+
+#typeResult, #loDetails {
+  background: rgba(23, 42, 69, 0.8);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  color: #e0e1dd;
+}

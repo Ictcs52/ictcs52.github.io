@@ -219,7 +219,10 @@ window.addEventListener('DOMContentLoaded', () => {
   subType.addEventListener('click', showAll);
   btnShowAll.addEventListener('click', showAll);
   btnTypeShow.addEventListener('click', showAll);
-  unitSelect.addEventListener('click', showAll);
+  unitSelect.addEventListener('click', showAll); 
+  unitSelect.addEventListener('change', updateInputs);
+
+
 
   // ปุ่มแสดงขอบเขตแยก
   btnShowMin.addEventListener('click', showInner);

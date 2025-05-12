@@ -119,11 +119,11 @@ window.addEventListener('DOMContentLoaded', () => {
   // Render functions
   function showInner() {
     clearCanvas(); const y = drawBase(); const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;
-    const px = rawInnerAU * scale; drawHalfArc(y, px, '#006400'); drawMarkerWithLabel(y, px, '#006400', '100°', rawInnerAU);
+    const px = rawInnerAU * scale; drawHalfArc(y, px, '#fff'); drawMarkerWithLabel(y, px, '#fff', '100°', rawInnerAU);
   }
   function showOuter() {
     clearCanvas(); const y = drawBase(); const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;
-    const px = rawOuterAU * scale; drawHalfArc(y, px, '#228B22'); drawMarkerWithLabel(y, px, '#228B22', '0°', rawOuterAU);
+    const px = rawOuterAU * scale; drawHalfArc(y, px, '#fff'); drawMarkerWithLabel(y, px, '#fff', '0°', rawOuterAU);
   }
   function showAll() {
     clearCanvas(); const y = drawBase(); const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;

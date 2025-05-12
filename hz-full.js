@@ -60,8 +60,8 @@ window.addEventListener('DOMContentLoaded', () => {
   function updateInputs() {
     const unit = unitSelect.value;
     if (unit === 'm') {
-      minR.value = rawInnerAU * AU_TO_M;
-      maxR.value = rawOuterAU * AU_TO_M;
+      minR.value = (rawInnerAU * AU_TO_M).toExponential(2);
+      maxR.value = (rawOuterAU * AU_TO_M).toExponential(2);
     } else {
       minR.value = rawInnerAU.toFixed(2);
       maxR.value = rawOuterAU.toFixed(2);
@@ -105,8 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ctx.beginPath(); ctx.arc(cx, y, r, Math.PI*1.25, Math.PI*1.75);
     ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
     ctx.fillStyle = '#007bff'; ctx.font = '14px Arial';
-    const twDeg = ctx.measureText(degLabel).width;
-    ctx.fillText(degLabel, cx - twDeg/2 + 20, y - r - 16);
+    const twDeg = ctx.measureText(degLabel).width; ctx.fillText(degLabel, cx - twDeg/2 + 20, y - r - 16);
     const unit = unitSelect.value;
     const dist = unit === 'm' ? distAU * AU_TO_M : distAU;
     const text = unit === 'm' ? dist.toExponential(2) + ' m' : dist.toFixed(2) + ' AU';
@@ -119,58 +118,41 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Render functions
   function showInner() {
-    clearCanvas();
-    const y = drawBase();
-    const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;
-    const px = rawInnerAU * scale;
-    drawHalfArc(y, px, '#006400');
-    drawMarkerWithLabel(y, px, '#006400', '100°', rawInnerAU);
+    clearCanvas(); const y = drawBase(); const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;
+    const px = rawInnerAU * scale; drawHalfArc(y, px, '#006400'); drawMarkerWithLabel(y, px, '#006400', '100°', rawInnerAU);
   }
   function showOuter() {
-    clearCanvas();
-    const y = drawBase();
-    const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;
-    const px = rawOuterAU * scale;
-    drawHalfArc(y, px, '#228B22');
-    drawMarkerWithLabel(y, px, '#228B22', '0°', rawOuterAU);
+    clearCanvas(); const y = drawBase(); const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;
+    const px = rawOuterAU * scale; drawHalfArc(y, px, '#228B22'); drawMarkerWithLabel(y, px, '#228B22', '0°', rawOuterAU);
   }
   function showAll() {
-    clearCanvas();
-    const y = drawBase();
-    const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;
-    const pxMin = rawInnerAU * scale;
-    const pxMax = rawOuterAU * scale;
+    clearCanvas(); const y = drawBase(); const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;
+    const pxMin = rawInnerAU * scale; const pxMax = rawOuterAU * scale;
     drawHZ(y, pxMin, pxMax); drawHalfArc(y, pxMin, '#006400'); drawHalfArc(y, pxMax, '#228B22');
-    drawMarkerWithLabel(y, pxMin, '#006400', '100°', rawInnerAU);
-    drawMarkerWithLabel(y, pxMax, '#228B22', '0°', rawOuterAU);
-    
-const unit = unitSelect.value;
-const dMin = unit === 'm' ? rawInnerAU * AU_TO_M : rawInnerAU;
-const dMax = unit === 'm' ? rawOuterAU * AU_TO_M : rawOuterAU;
-const w    = dMax - dMin;
-loDetails.innerHTML = `
-  <div><strong>Inner (100 °C):</strong> ${unit==='m'? dMin.toExponential(2): dMin.toFixed(2)} ${unit==='m'?'m':'AU'}</div>
-  <div><strong>Outer (0 °C):</strong> ${unit==='m'? dMax.toExponential(2): dMax.toFixed(2)} ${unit==='m'?'m':'AU'}</div>
-  <div><strong>Width:</strong> ${unit==='m'? w.toExponential(2): w.toFixed(2)} ${unit==='m'?'m':'AU'}</div>
-`;
-    
+    drawMarkerWithLabel(y, pxMin, '#006400', '100°', rawInnerAU); drawMarkerWithLabel(y, pxMax, '#228B22', '0°', rawOuterAU);
+    // update details panel
+    const unit = unitSelect.value;
+    const dMin = unit === 'm' ? rawInnerAU * AU_TO_M : rawInnerAU;
+    const dMax = unit === 'm' ? rawOuterAU * AU_TO_M : rawOuterAU;
+    const w = dMax - dMin;
+    loDetails.innerHTML = `
+      <div><strong>Inner (100 °C):</strong> ${unit==='m'? dMin.toExponential(2): dMin.toFixed(2)} ${unit==='m'?'m':'AU'}</div>
+      <div><strong>Outer (0 °C):</strong> ${unit==='m'? dMax.toExponential(2): dMax.toFixed(2)} ${unit==='m'?'m':'AU'}</div>
+      <div><strong>Width:</strong> ${unit==='m'? w.toExponential(2): w.toFixed(2)} ${unit==='m'?'m':'AU'}</div>
+    `;
   }
 
   // Event handlers
   btnTypeShow.addEventListener('click', () => {
-    const key = spectralType.value + subType.value;
-    const avg = avgLumData[key] || 0;
-    lumAvg.value = avg ? avg.toFixed(2) : '–';
-    const { inner, outer } = computeHZ(avg);
-    rawInnerAU = inner; rawOuterAU = outer;
-    updateInputs();
-
+    const key = spectralType.value + subType.value; const avg = avgLumData[key] || 0;
+    lumAvg.value = avg ? avg.toFixed(2) : '–'; const { inner, outer } = computeHZ(avg);
+    rawInnerAU = inner; rawOuterAU = outer; updateInputs();
+    // update typeResult panel for student feedback
     typeResult.innerHTML = `
-  <div><strong>L★/L⊙ Avg:</strong> ${avg.toFixed(2)}</div>
-  <div><strong>rₘᵢₙ (100 °C):</strong> ${inner.toFixed(2)} AU</div>
-  <div><strong>rₒᵤₜ (0 °C):</strong> ${outer.toFixed(2)} AU</div>
-`;
-
+      <div><strong>L★/L⊙ Avg:</strong> ${avg ? avg.toFixed(2) : '–'}</div>
+      <div><strong>rₘᵢₙ (100 °C):</strong> ${inner.toFixed(2)} AU</div>
+      <div><strong>rₒᵤₜ (0 °C):</strong> ${outer.toFixed(2)} AU</div>
+    `;
   });
   btnShowMin.addEventListener('click', showInner);
   btnShowMax.addEventListener('click', showOuter);
@@ -179,11 +161,7 @@ loDetails.innerHTML = `
   btnUpdate.addEventListener('click', showAll);
 
   // Reset on filters change
-  [spectralType, subType].forEach(el =>
-    el.addEventListener('change', () => {
-      lumAvg.value = '–'; minR.value = ''; maxR.value = '';
-      typeResult.innerHTML = ''; loDetails.innerHTML = '';
-      clearCanvas();
-    })
-  );
+  [spectralType, subType].forEach(el => el.addEventListener('change', () => {
+    lumAvg.value='–'; minR.value=''; maxR.value=''; typeResult.innerHTML=''; loDetails.innerHTML=''; clearCanvas();
+  }));
 });

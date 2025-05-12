@@ -1,17 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Habitable Zone Explorer</title>
-  <!-- Bootstrap 5 -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"/>
+  
+  <!-- เรียกใช้ Bootstrap 5 จาก CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- เชื่อมกับไฟล์ CSS หลัก -->
   <link href="styles.css" rel="stylesheet"/>
 </head>
+
 <body>
+  <!-- Navbar ด้านบน -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow">
     <div class="container">
       <a class="navbar-brand fw-bold" href="#">
@@ -20,131 +22,135 @@
     </div>
   </nav>
 
-    <!-- Hero Description -->
+  <!-- ส่วนอธิบายความหมายของ Habitable Zone -->
   <section class="container text-center text-light my-4">
     <h2 class="display-5">Habitable Zone คืออะไร?</h2>
     <p class="lead" style="text-align: left;">
-Habitatable zone หรือเขตเอื้อชีวิต คือระยะห่างระหว่างดาวฤกษ์และดาวเคราะห์ ที่ทำให้อุณหภูมิของดาวเคราะห์อยู่ระหว่าง 0-100 องศาเซลเซียส ทำให้น้ำมีสถานะเป็นของเหลว ซึ่งน้ำในสถานะของเหลวเป็นปัจจัยสำคัญต่อสิ่งมีชีวิต เขตเอื้อชีวิตจึงเป็นเขตที่เหมาะกับการกำเนิดสิ่งมีชีวิต โดยระยะทางของขอบเขตเอื้อชีวิต จะแปรผันตรงกับกำลังส่องสว่างดาวฤกษ์ (L★/L⊙) ทั้งนี้ขึ้นอยู่กับปัจจัยอื่นๆ ด้วย เช่น การมีชั้นบรรยากาศ ค่าสัมประสิทธิ์การสะท้อนแสงของดาว ฯลฯ
+      Habitable zone หรือเขตเอื้อชีวิต คือระยะห่างระหว่างดาวฤกษ์และดาวเคราะห์ ที่ทำให้อุณหภูมิของดาวเคราะห์อยู่ระหว่าง 0-100 องศาเซลเซียส ทำให้น้ำมีสถานะเป็นของเหลว ซึ่งน้ำในสถานะของเหลวเป็นปัจจัยสำคัญต่อสิ่งมีชีวิต เขตเอื้อชีวิตจึงเป็นเขตที่เหมาะกับการกำเนิดสิ่งมีชีวิต โดยระยะทางของขอบเขตเอื้อชีวิต จะแปรผันตรงกับกำลังส่องสว่างดาวฤกษ์ (L★/L⊙) ทั้งนี้ขึ้นอยู่กับปัจจัยอื่นๆ ด้วย เช่น การมีชั้นบรรยากาศ ค่าสัมประสิทธิ์การสะท้อนแสงของดาว ฯลฯ
     </p>
   </section>
- </div>
-  <!-- 1. หน้าแรก: Filter by Spectral Type -->
+
+  <!-- ส่วนที่ 1: ฟอร์มเลือกประเภทของดาวฤกษ์ -->
   <section class="container mb-5">
     <div class="card p-4">
       <h5 class="card-title">1. Filter by Spectral Type</h5>
       <form id="typeForm" class="row g-3 align-items-end">
-        <div class="col-md-2">
+        
+        <!-- เลือก Spectral Type -->
+        <div class="col-md-3">
           <label for="spectralType" class="form-label">Type</label>
           <h6>ชนิดดาวฤกษ์</h6>
-          <select id="spectralType" class="form-select">
+          <select id="spectralType" class="form-select" style="background: #9cbefd;color: #000;">
             <option>O</option><option>B</option><option>A</option>
             <option>F</option><option>G</option><option>K</option><option>M</option>
           </select>
         </div>
-        <div class="col-md-2">
+
+        <!-- เลือก Subtype -->
+        <div class="col-md-3">
           <label for="subType" class="form-label">Subtype</label>
-           <h6>ชนิดดาาวฤกษ์ย่อย</h6>
-          <select id="subType" class="form-select">
+          <h6>ชนิดดาวฤกษ์ย่อย</h6>
+          <select id="subType" class="form-select" style="background: #9cbefd;color: #000;">
             <option>0</option><option>1</option><option>2</option>
             <option>3</option><option>4</option><option>5</option>
             <option>6</option><option>7</option><option>8</option><option>9</option>
           </select>
         </div>
-        <div class="col-md-3">
+
+        <!-- แสดงค่า L★/L⊙ -->
+        <div class="col-md-4">
           <label for="lumAvg" class="form-label">L★/L⊙ Avg</label>
           <h6>ค่าเฉลี่ยกำลังส่องสว่างดาวฤกษ์ในจำนวนเท่าของดวงอาทิตย์</h6>
-          
-          <input type="text"
-                 id="lumAvg"
-                 class="form-control"
-                 readonly
-                 placeholder="–"/>
+          <input type="text" id="lumAvg" class="form-control" readonly placeholder="–"/>
         </div>
+
+        <!-- ปุ่ม Show -->
         <div class="col-md-2">
-          <button type="button"
-                  id="btnTypeShow"
-                  class="btn btn-primary w-100">
+          <button type="button" id="btnTypeShow" class="btn btn-primary w-100">
             Show
           </button>
         </div>
       </form>
+
+      <!-- แสดงผลลัพธ์หลังจากเลือก -->
       <div id="typeResult" class="mt-4"></div>
     </div>
   </section>
 
-  <!-- 2. Habitable Zone by L★/L⊙ -->
+  <!-- ส่วนที่ 2: คำนวณเขตเอื้อชีวิตจากค่ากำลังส่องสว่าง -->
   <section class="container mb-5">
     <div class="card p-4">
-      <h5 class="card-title">2. Habitable Zone by L★/L⊙</h>
+      <h5 class="card-title">2. Habitable Zone by L★/L⊙</h5>
       <h6>แบบจำลองแสดงขอบเขตเอื้อชีวิตตามกำลังส่องสว่าง</h6>
-      
-      <!-- Canvas แสดงผลแบบ linear -->
+
+      <!-- พื้นที่ Canvas สำหรับแสดงกราฟ -->
       <div class="mb-4 text-center">
         <canvas id="hzCanvas" width="800" height="200"></canvas>
       </div>
 
-      <!-- Controls: แสดงระยะ rᵢₙ, rₒᵤₜ -->
+      <!-- ฟอร์มคำนวณขอบเขต (รัศมี) -->
       <form id="loForm" class="row g-3 align-items-end">
-        <div class="col-md-2">
-          <label for="minR" class="form-label">Minimum radius at 100 °C</label>
-          <h6>ระยะทางจากดวงอาทิตย์ที่ใกล้ที่สุด ที่อุณหภูมิเฉลี่ย 100 องศาเซลเซียส</h6>
-          <input type="number" step="0.01"
-                 id="minR"
-                 class="form-control"
-                 readonly/>
-        </div>
+        
+        <!-- หน่วยระยะทาง -->
         <div class="col-md-1">
-          <button type="button"
-                  id="btnShowMin"
-                  class="btn btn-outline-primary w-100">
-            Show
-          </button>
-        </div>
-        <div class="col-md-2">
-          <label for="maxR" class="form-label">Maximum radius at 0 °C</label>
-          <h6>ระยะทางจากดวงอาทิตย์ที่ไกลที่สุด ที่อุณหภูมิเฉลี่ย 0 องศาเซลเซียส</h6>
-          <input type="number" step="0.01"
-                 id="maxR"
-                 class="form-control"
-                 readonly/>
-        </div>
-        <div class="col-md-1">
-          <button type="button"
-                  id="btnShowMax"
-                  class="btn btn-outline-primary w-100">
-            Show
-          </button>
-        </div>
-        <div class="col-md-2">
-          <button type="button"
-                  id="btnShowAll"
-                  class="btn btn-primary w-100">
-            Show All
-          </button>
-        </div>
-        <div class="col-md-2">
           <label for="unitSelect" class="form-label">Units</label>
-          <select id="unitSelect" class="form-select">
+          <h6>หน่วยของระยะทาง</h6>
+          <select id="unitSelect" class="form-select" style="background: #9cbefd;color: #000;">
             <option value="au" selected>AU</option>
-            <option value="m">m</option>
+            <option value="m">M</option>
           </select>
         </div>
-        <div class="col-md-2">
-          <button type="button"
-                  id="btnUpdate"
-                  class="btn btn-success w-100">
-            Update Details
+
+        <!-- ค่ารัศมีต่ำสุด -->
+        <div class="col-md-4">
+          <label for="minR" class="form-label">Minimum radius at 100 °C</label>
+          <h6>ระยะทางจากดวงอาทิตย์ที่ใกล้ที่สุด ที่อุณหภูมิเฉลี่ย 100 °C</h6>
+          <input type="text" id="minR" class="form-control" readonly/>
+        </div>
+
+        <div class="col-md-1">
+          <button type="button" id="btnShowMin" class="btn btn-outline-primary w-100">
+            Show
+          </button>
+        </div>
+
+        <!-- ค่ารัศมีสูงสุด -->
+        <div class="col-md-4">
+          <label for="maxR" class="form-label">Maximum radius at 0 °C</label>
+          <h6>ระยะทางจากดวงอาทิตย์ที่ไกลที่สุด ที่อุณหภูมิเฉลี่ย 0 °C</h6>
+          <input type="text" id="maxR" class="form-control" readonly/>
+        </div>
+
+        <div class="col-md-1">
+          <button type="button" id="btnShowMax" class="btn btn-outline-primary w-100">
+            Show
+          </button>
+        </div>
+
+        <!-- ปุ่มแสดงทั้งหมด -->
+        <div class="col-md-1">
+          <button type="button" id="btnShowAll" class="btn btn-primary w-100">
+            Show All
           </button>
         </div>
       </form>
 
+      <!-- แสดงรายละเอียดหลังคำนวณ -->
       <div id="loDetails" class="mt-4"></div>
     </div>
   </section>
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
-  </script>
+  <!-- เรียกใช้งาน Bootstrap Bundle (JS + Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- สคริปต์หลักของระบบ -->
   <script src="hz-full.js"></script>
+
+  <!-- ส่วนท้ายเว็บไซต์ (Footer) -->
+  <footer class="bg-dark text-light text-center py-3 mt-5 shadow">
+    <div class="container">
+      <small>พัฒนาโดย <strong>DEV.</strong> | Habitable Zone Explorer © 2025</small>
+    </div>
+  </footer>
 </body>
 </html>

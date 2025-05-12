@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // Conversion factor
   const AU_TO_M = 1.496e11; // 1 AU = 1.496 × 10^11 meters
 
-  // Store raw radii in AU for conversion
+  // Store raw radii in AU
   let rawInnerAU = 0;
   let rawOuterAU = 0;
 
@@ -60,8 +60,8 @@ window.addEventListener('DOMContentLoaded', () => {
   function updateInputs() {
     const unit = unitSelect.value;
     if (unit === 'm') {
-      minR.value = (rawInnerAU * AU_TO_M).toExponential(2);
-      maxR.value = (rawOuterAU * AU_TO_M).toExponential(2);
+      minR.value = rawInnerAU * AU_TO_M;
+      maxR.value = rawOuterAU * AU_TO_M;
     } else {
       minR.value = rawInnerAU.toFixed(2);
       maxR.value = rawOuterAU.toFixed(2);
@@ -85,8 +85,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Draw shading half-ring
   function drawHZ(y, pxMin, pxMax) {
-    ctx.beginPath();
-    ctx.moveTo(MARGIN_LEFT + pxMin, y);
+    ctx.beginPath(); ctx.moveTo(MARGIN_LEFT + pxMin, y);
     ctx.arc(MARGIN_LEFT, y, pxMin, 0, Math.PI, true);
     ctx.lineTo(MARGIN_LEFT + pxMax, y);
     ctx.arc(MARGIN_LEFT, y, pxMax, Math.PI, 0, false);
@@ -95,8 +94,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Draw boundary arc
   function drawHalfArc(y, px, color) {
-    ctx.beginPath();
-    ctx.arc(MARGIN_LEFT, y, px, Math.PI/2, -Math.PI/2, true);
+    ctx.beginPath(); ctx.arc(MARGIN_LEFT, y, px, Math.PI/2, -Math.PI/2, true);
     ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
   }
 
@@ -104,14 +102,11 @@ window.addEventListener('DOMContentLoaded', () => {
   function drawMarkerWithLabel(y, px, color, degLabel, distAU) {
     const r = 8;
     const cx = MARGIN_LEFT + px;
-    // tick
     ctx.beginPath(); ctx.arc(cx, y, r, Math.PI*1.25, Math.PI*1.75);
     ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
-    // degree label
     ctx.fillStyle = '#007bff'; ctx.font = '14px Arial';
     const twDeg = ctx.measureText(degLabel).width;
     ctx.fillText(degLabel, cx - twDeg/2 + 20, y - r - 16);
-    // distance label
     const unit = unitSelect.value;
     const dist = unit === 'm' ? distAU * AU_TO_M : distAU;
     const text = unit === 'm' ? dist.toExponential(2) + ' m' : dist.toFixed(2) + ' AU';
@@ -122,7 +117,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ctx.fillText(text, dx, y + r + 40);
   }
 
-  // Draw functions
+  // Render functions
   function showInner() {
     clearCanvas();
     const y = drawBase();
@@ -145,14 +140,12 @@ window.addEventListener('DOMContentLoaded', () => {
     const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;
     const pxMin = rawInnerAU * scale;
     const pxMax = rawOuterAU * scale;
-    drawHZ(y, pxMin, pxMax);
-    drawHalfArc(y, pxMin, '#006400');
-    drawHalfArc(y, pxMax, '#228B22');
+    drawHZ(y, pxMin, pxMax); drawHalfArc(y, pxMin, '#006400'); drawHalfArc(y, pxMax, '#228B22');
     drawMarkerWithLabel(y, pxMin, '#006400', '100°', rawInnerAU);
     drawMarkerWithLabel(y, pxMax, '#228B22', '0°', rawOuterAU);
   }
 
-  // Handlers
+  // Event handlers
   btnTypeShow.addEventListener('click', () => {
     const key = spectralType.value + subType.value;
     const avg = avgLumData[key] || 0;
@@ -161,7 +154,7 @@ window.addEventListener('DOMContentLoaded', () => {
     rawInnerAU = inner; rawOuterAU = outer;
     updateInputs();
   });
-  btnShowInner.addEventListener('click', showInner);
+  btnShowMin.addEventListener('click', showInner);
   btnShowMax.addEventListener('click', showOuter);
   btnShowAll.addEventListener('click', showAll);
   unitSelect.addEventListener('change', updateInputs);

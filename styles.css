@@ -1,14 +1,4 @@
-body {
-  background-color: #f8f9fa;
-}
-#hzCanvas {
-  border: 1px solid #ccc;
-  background: #fff;
-}
 
-/* styles.css */
-
-/* ใช้ฟอนต์ Google Font “Space Mono” สำหรับความรู้สึกอวกาศ */
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 
 body {

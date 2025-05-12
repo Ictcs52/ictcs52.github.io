@@ -3,7 +3,7 @@
 
 /* ===== กำหนดลักษณะพื้นฐานของ body ===== */
 body {
-  background: url('https://sdmntpreastus.oaiusercontent.com/files/00000000-86c0-61f9-af26-5695aad336b0/raw?se=2025-05-12T09%3A26%3A41Z&sp=r&sv=2024-08-04&sr=b&scid=00000000-0000-0000-0000-000000000000&skoid=5cab1ff4-c20d-41dc-babb-df0c2cc21dd4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-12T06%3A31%3A19Z&ske=2025-05-13T06%3A31%3A19Z&sks=b&skv=2024-08-04&sig=psWXCR%2BaabFwtryzjriOSbapLFm3duMAGtj32yZEKgA%3D') no-repeat center center fixed;
+  background: url('background.png') no-repeat center center fixed;
   background-size: cover;
   color: #e0e1dd;
   font-family: 'Space Mono', monospace;
@@ -87,6 +87,7 @@ body {
 /* ===== พื้นที่ Canvas ===== */
 #hzCanvas {
   width: 100%;
+  
   border: 2px solid #415a77;
   border-radius: 0.5rem;
   background: #0d1b2a;

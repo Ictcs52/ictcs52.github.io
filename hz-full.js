@@ -128,8 +128,11 @@ window.addEventListener('DOMContentLoaded', () => {
   function showAll() {
     clearCanvas(); const y = drawBase(); const scale = (canvas.width - MARGIN_LEFT - MARGIN_RIGHT) / rawOuterAU;
     const pxMin = rawInnerAU * scale; const pxMax = rawOuterAU * scale;
-    drawHZ(y, pxMin, pxMax); drawHalfArc(y, pxMin, '#006400'); drawHalfArc(y, pxMax, '#228B22');
-    drawMarkerWithLabel(y, pxMin, '#006400', '100°', rawInnerAU); drawMarkerWithLabel(y, pxMax, '#228B22', '0°', rawOuterAU);
+    drawHZ(y, pxMin, pxMax); 
+    drawHalfArc(y, pxMin, '#fff'); 
+    drawHalfArc(y, pxMax, '#fff');
+    drawMarkerWithLabel(y, pxMin, '#006400', '100°', rawInnerAU); 
+    drawMarkerWithLabel(y, pxMax, '#228B22', '0°', rawOuterAU);
     // update details panel
     const unit = unitSelect.value;
     const dMin = unit === 'm' ? rawInnerAU * AU_TO_M : rawInnerAU;

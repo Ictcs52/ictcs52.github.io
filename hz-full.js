@@ -143,6 +143,17 @@ window.addEventListener('DOMContentLoaded', () => {
     drawHZ(y, pxMin, pxMax); drawHalfArc(y, pxMin, '#006400'); drawHalfArc(y, pxMax, '#228B22');
     drawMarkerWithLabel(y, pxMin, '#006400', '100°', rawInnerAU);
     drawMarkerWithLabel(y, pxMax, '#228B22', '0°', rawOuterAU);
+    
+const unit = unitSelect.value;
+const dMin = unit === 'm' ? rawInnerAU * AU_TO_M : rawInnerAU;
+const dMax = unit === 'm' ? rawOuterAU * AU_TO_M : rawOuterAU;
+const w    = dMax - dMin;
+loDetails.innerHTML = `
+  <div><strong>Inner (100 °C):</strong> ${unit==='m'? dMin.toExponential(2): dMin.toFixed(2)} ${unit==='m'?'m':'AU'}</div>
+  <div><strong>Outer (0 °C):</strong> ${unit==='m'? dMax.toExponential(2): dMax.toFixed(2)} ${unit==='m'?'m':'AU'}</div>
+  <div><strong>Width:</strong> ${unit==='m'? w.toExponential(2): w.toFixed(2)} ${unit==='m'?'m':'AU'}</div>
+`;
+    
   }
 
   // Event handlers
